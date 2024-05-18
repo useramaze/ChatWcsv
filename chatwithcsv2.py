@@ -12,6 +12,8 @@ headers ={
     "content-type": "application/json"
 }
 
+st.set_page_config(layout="wide")
+
 os.environ["PANDASAI_API_KEY"] = headers["authorization"]
 # Dictionary to store the extracted dataframes
 data = {}
