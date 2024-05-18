@@ -12,7 +12,7 @@ headers ={
     "content-type": "application/json"
 }
 
-os.environ["PANDASAI_API_KEY"] = headers.authorization
+os.environ["PANDASAI_API_KEY"] = headers["authorization"]
 # Dictionary to store the extracted dataframes
 data = {}
 
