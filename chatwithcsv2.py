@@ -91,9 +91,9 @@ def chat_window(analyst, df):
                     st.image(base64.b64decode(img_data))
                     st.session_state.messages.append({"role": "assistant", "plot_data": img_data})
                     os.remove(plot_path)
-                # else:
-                #     st.write(response)
-                #     st.session_state.messages.append({"role": "assistant", "response": response})
+                else:
+                    st.write(response)
+                    st.session_state.messages.append({"role": "assistant", "response": response})
         except Exception as e:
             st.write(e)
             error_message = "⚠️Sorry, Couldn't generate the answer! Please try rephrasing your question!"
