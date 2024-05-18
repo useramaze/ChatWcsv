@@ -7,21 +7,27 @@ from pandasai.responses.streamlit_response import StreamlitResponse
 import os
 import base64
 
+# Define your API key here
 headers ={
     "authorization": st.secrets["API_KEY"],
     "content-type": "application/json"
 }
 
-st.set_page_config(layout="wide")
-
 os.environ["PANDASAI_API_KEY"] = headers["authorization"]
-# Dictionary to store the extracted dataframes
-data = {}
 
 def main():
-    st.set_page_config(page_title="PandasAI", page_icon="🐼")
-    st.title("Chat with Your Data using PandasAI:🐼")
+    st.set_page_config(page_title="DataAssistant", page_icon="🐼")
+    st.title("Chat with Your Data ")
     
+    # Initialize the data dictionary
+    data = {}
+
+    # Load default CSV file
+    default_csv = 'ChatWithCSV PANDASAI\Merged_Clean_CSV.csv'
+    if os.path.exists(default_csv):
+        default_df = pd.read_csv(default_csv)
+        data['Default Data'] = default_df
+
     # Side Menu Bar
     with st.sidebar:
         st.title("Configuration:⚙️")
@@ -30,24 +36,70 @@ def main():
         st.markdown(":green[*Please ensure the first row has the column names.*]")
 
     if file_upload is not None:
-        data = extract_dataframes(file_upload)
-        df = st.selectbox("Here's your uploaded data!", tuple(data.keys()), index=0)
-        st.dataframe(data[df])
-
-        # Instantiate the BambooLLM
-        llm = BambooLLM()
-        
-        # Instantiate the PandasAI agent
-        analyst = get_agent(data, llm)
-
-        # Start the chat with the PandasAI agent
-        chat_window(analyst, data[df])
+        uploaded_data = extract_dataframes(file_upload)
+        data.update(uploaded_data)
+    
+    if data:
+        df_key = st.selectbox("Here's your uploaded data!", tuple(data.keys()), index=0)
+        st.dataframe(data[df_key])
     else:
-        st.warning("Please upload your data first! You can upload a CSV or an Excel file.")
+        st.warning("Please upload a dataset to proceed.")
+
+    # Instantiate the BambooLLM
+    llm = BambooLLM()
+    
+    # Instantiate the PandasAI agent
+    analyst = get_agent(data, llm)
+
+    # Start the chat with the PandasAI agent
+    if data:
+        chat_window(analyst, data[df_key])
 
 def chat_window(analyst, df):
     with st.chat_message("assistant"):
-        st.text("Explore your data with PandasAI?🧐")
+        st.text("Get instant answers to your runtime queries with Data Assistant.")
+
+    # List of default questions
+    default_questions = [
+        "What are the top 5 districts suffering from Road Accidents?",
+        "Can you plot the number of accidents over the years?",
+        "What are the top 5 types of collisions causing road accidents?",
+        "Which Road type causes the highest number of Fatal Accidents?"
+    ]
+
+    st.markdown("## Sample Questions:")
+    if 'selected_question' not in st.session_state:
+        st.session_state.selected_question = None
+
+    for i, question in enumerate(default_questions):
+        if st.button(question, key=f"default_question_{i}"):
+            st.session_state.selected_question = question
+            st.session_state.question_triggered = True
+
+    if st.session_state.selected_question and st.session_state.question_triggered:
+        user_question = st.session_state.selected_question
+        st.session_state.messages.append({"role": "user", "question": user_question})
+        with st.chat_message("user"):
+            st.markdown(user_question)
+        try:
+            with st.spinner("Analyzing..."):
+                response = analyst.chat(user_question)
+                plot_path = "exports/charts/temp_chart.png"
+                if os.path.exists(plot_path):
+                    with open(plot_path, "rb") as img_file:
+                        img_data = base64.b64encode(img_file.read()).decode()
+                    st.image(base64.b64decode(img_data))
+                    st.session_state.messages.append({"role": "assistant", "plot_data": img_data})
+                    os.remove(plot_path)
+                else:
+                    st.write(response)
+                    st.session_state.messages.append({"role": "assistant", "response": response})
+        except Exception as e:
+            st.write(e)
+            error_message = "⚠️Sorry, Couldn't generate the answer! Please try rephrasing your question!"
+            st.session_state.messages.append({"role": "assistant", "error": error_message})
+        st.session_state.selected_question = None
+        st.session_state.question_triggered = False
 
     # Initializing message history and chart path in session state
     if "messages" not in st.session_state:
@@ -67,7 +119,7 @@ def chat_window(analyst, df):
                 st.image(img)
 
     # Getting the questions from the users
-    user_question = st.chat_input("What are you curious about? ")
+    user_question = st.chat_input("What are you curious about?")
 
     if user_question:
         with st.chat_message("user"):
