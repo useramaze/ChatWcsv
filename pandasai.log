@@ -1,0 +1,272 @@
+2024-05-18 15:33:05 [INFO] Question: Hello
+2024-05-18 15:33:05 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-18 15:33:05 [INFO] Prompt ID: a7989952-9aeb-495e-b2f7-1b0470f1f887
+2024-05-18 15:33:05 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-18 15:33:05 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-18 15:33:05 [INFO] Executing Step 1: CacheLookup
+2024-05-18 15:33:05 [INFO] Executing Step 2: PromptGeneration
+2024-05-18 15:33:07 [INFO] Using prompt: <dataframe>
+dfs[0]:131819x15
+Year,Noofvehicle_involved,Accident_Classification,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Offense_Date
+2021,1,Road Accidents,Simple Injury,Hit animal,Not at  Junction,Curve,State Highway,Concrete,Others,No influence on accident,Cloudy,SixLane,Centre Yellow Line,20-07-2018
+2022,20,Other Railway Accidents,Fatal,Skidding or Self accident,Stop sign,Curve and Incline,NH,Surfaced,Wet,,Very Hot,FourLane,Zebra Crossing,09-06-2021
+2019,6,Rail Road Accidents,Grievous Injury,Head on,Signals (Not working),Crest of hill,City or Town Road,Gravel,Dry,Not Applicable,Wind,,,03-08-2020
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ Hello
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-05-18 15:33:07 [INFO] Executing Step 3: CodeGenerator
+2024-05-18 15:33:14 [INFO] Prompt used:
+            None
+            
+2024-05-18 15:33:14 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Dataframes
+dfs = [
+    pd.DataFrame({
+        'Year': [2021, 2019, 2022],
+        'Noofvehicle_involved': [1, 6, 20],
+        'Accident_Classification': ['Road Accidents', 'Rail Road Accidents', 'Other Railway Accidents'],
+        'Severity': ['Simple Injury', 'Grievous Injury', 'Fatal'],
+        'Collision_Type': ['Hit animal', 'Head on', 'Skidding or Self accident'],
+        'Junction_Control': ['Not at Junction', 'Signals (Not working)', 'Stop sign'],
+        'Road_Character': ['Curve', 'Crest of hill', 'Curve and Incline'],
+        'Road_Type': ['State Highway', 'City or Town Road', 'NH'],
+        'Surface_Type': ['Concrete', 'Gravel', 'Surfaced'],
+        'Surface_Condition': ['Others', 'Dry', 'Wet'],
+        'Road_Condition': ['No influence on accident', 'Not Applicable', ''],
+        'Weather': ['Cloudy', 'Wind', 'Very Hot'],
+        'Lane_Type': ['SixLane', '', 'FourLane'],
+        'Road_Markings': ['Centre Yellow Line', '', 'Zebra Crossing'],
+        'Offense_Date': ['20-07-2018', '03-08-2020', '09-06-2021']
+    })
+]
+
+# Declare result var
+result = {"type": "dataframe", "value": dfs[0]}
+            ```
+            
+2024-05-18 15:33:14 [INFO] Executing Step 4: CachePopulation
+2024-05-18 15:33:14 [INFO] Executing Step 5: CodeCleaning
+2024-05-18 15:33:14 [INFO] 
+Code running:
+```
+result = {'type': 'dataframe', 'value': dfs[0]}
+        ```
+2024-05-18 15:33:14 [INFO] Executing Step 6: CodeExecution
+2024-05-18 15:33:14 [INFO] Executing Step 7: ResultValidation
+2024-05-18 15:33:14 [INFO] Answer: {'type': 'dataframe', 'value':         Year  Noofvehicle_involved Accident_Classification         Severity             Collision_Type  Junction_Control  ... Surface_Condition  Road_Condition Weather   Lane_Type Road_Markings Offense_Date
+0       2016                     1          Road Accidents            Fatal                    Head on  Not at  Junction  ...               Dry  Not Applicable   Clear         NaN           NaN   29-05-2016
+1       2016                     1          Road Accidents            Fatal  Skidding or Self accident  Not at  Junction  ...               Dry  Not Applicable    Fine      Others           NaN   15-02-2016
+2       2016                     1          Road Accidents  Grievous Injury                    Head on      Uncontrolled  ...               Dry  Not Applicable    Fine         NaN           NaN   10-02-2016
+3       2016                     1          Road Accidents      Damage Only  Skidding or Self accident      Uncontrolled  ...               Dry  Not Applicable   Clear         NaN           NaN   31-03-2016
+4       2016                     2          Road Accidents            Fatal                   Rear end  Not at  Junction  ...               Dry  Not Applicable   Clear         NaN           NaN   28-05-2016
+...      ...                   ...                     ...              ...                        ...               ...  ...               ...             ...     ...         ...           ...          ...
+131814  2023                     2          Road Accidents            Fatal         Vehicle to Vehicle  Not at  Junction  ...               Dry  Not Applicable    Fine  SingleLane           NaN   23-10-2023
+131815  2023                     2          Road Accidents  Grievous Injury         Vehicle to Vehicle  Not at  Junction  ...               Dry  Not Applicable    Fine         NaN           NaN   10-11-2023
+131816  2023                     1          Road Accidents            Fatal             Hit pedestrian  Not at  Junction  ...               Dry  Not Applicable    Fine         NaN           NaN   16-11-2023
+131817  2023                     2          Road Accidents  Grievous Injury         Vehicle to Vehicle  Not at  Junction  ...               Dry  Not Applicable    Fine         NaN           NaN   21-11-2023
+131818  2023                     2          Road Accidents  Grievous Injury         Vehicle to Vehicle      Uncontrolled  ...               Dry  Not Applicable   Clear         NaN           NaN   23-11-2023
+
+[131819 rows x 15 columns]}
+2024-05-18 15:33:14 [INFO] Executing Step 8: ResultParsing
+2024-05-18 15:34:11 [INFO] Question: what are the severities ?
+2024-05-18 15:34:11 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-18 15:34:11 [INFO] Prompt ID: eefa42cb-e7c4-4488-a61d-2505e55817bc
+2024-05-18 15:34:11 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-18 15:34:11 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-18 15:34:11 [INFO] Executing Step 1: CacheLookup
+2024-05-18 15:34:11 [INFO] Executing Step 2: PromptGeneration
+2024-05-18 15:34:29 [INFO] Using prompt: <dataframe>
+dfs[0]:131819x15
+Year,Noofvehicle_involved,Accident_Classification,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Offense_Date
+2020,10,Other Railway Accidents,Simple Injury,Hit animal,No signal lights,Others,Sub Arterial,Metalled,Wet,Not Applicable,Fog / Mist,,Centre White Line,24-07-2018
+2019,8,Rail Road Accidents,Grievous Injury,Hit and Run,Not at  Junction,Incline,Village Road,Gravel,Others,Pot holed,Mist or Fog,DualLane,ACHARI,08-09-2022
+2023,22,Road Accidents,Damage Only,Hit parked vehicle,Signal lights Automatic,Crest of hill,Feeder Road,Bitumen(Tar),Muddy,,Fine,FourLane,,29-08-2022
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ what are the severities ?
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-05-18 15:34:29 [INFO] Executing Step 3: CodeGenerator
+2024-05-18 15:34:32 [INFO] Prompt used:
+            None
+            
+2024-05-18 15:34:32 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+severities = dfs[0]['Severity'].unique()
+
+# Declare result var: 
+result = { "type": "string", "value": f"The severities in the dataset are: {', '.join(severities)}." }
+            ```
+            
+2024-05-18 15:34:32 [INFO] Executing Step 4: CachePopulation
+2024-05-18 15:34:32 [INFO] Executing Step 5: CodeCleaning
+2024-05-18 15:34:32 [INFO] 
+Code running:
+```
+severities = dfs[0]['Severity'].unique()
+result = {'type': 'string', 'value': f"The severities in the dataset are: {', '.join(severities)}."}
+        ```
+2024-05-18 15:34:32 [INFO] Executing Step 6: CodeExecution
+2024-05-18 15:34:32 [INFO] Executing Step 7: ResultValidation
+2024-05-18 15:34:32 [INFO] Answer: {'type': 'string', 'value': 'The severities in the dataset are: Fatal, Grievous Injury, Damage Only, Simple Injury.'}
+2024-05-18 15:34:32 [INFO] Executing Step 8: ResultParsing
+2024-05-18 15:34:46 [INFO] Question: what are the percentage?
+2024-05-18 15:34:46 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-18 15:34:46 [INFO] Prompt ID: eaff1213-fb38-42f7-a798-e9a904dec1de
+2024-05-18 15:34:46 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-18 15:34:46 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-18 15:34:46 [INFO] Executing Step 1: CacheLookup
+2024-05-18 15:34:46 [INFO] Executing Step 2: PromptGeneration
+2024-05-18 15:34:48 [INFO] Using prompt: <dataframe>
+dfs[0]:131819x15
+Year,Noofvehicle_involved,Accident_Classification,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Offense_Date
+2021,10,Road Accidents,Damage Only,Right Turn Collision,Stop sign,Curve and Incline,Mixed,Kutcha,Muddy,,Strong Wind,,,05-04-2016
+2023,11,Other Railway Accidents,Fatal,Skidding or Self accident,Signal lights Not working,Hump,Others,Gravel,Ditch or Potholed,Drainage Ditch,Light Rain,FourLane,Directional Marking,31-07-2018
+2020,1,Rail Road Accidents,Grievous Injury,Vehicle to Vehicle,No signal lights,Sharp Curve,Sub Arterial,Concrete,Flooded,Construction Work / Material,Clear,SixLane,ACHARI,28-07-2019
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ what are the percentage?
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-05-18 15:34:48 [INFO] Executing Step 3: CodeGenerator
+2024-05-18 15:34:54 [INFO] Prompt used:
+            None
+            
+2024-05-18 15:34:54 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+no_of_accidents = dfs[0]['Noofvehicle_involved'].sum()
+damage_only_count = dfs[0][dfs[0]['Accident_Classification'] == 'Damage Only']['Noofvehicle_involved'].sum()
+grievous_injury_count = dfs[0][dfs[0]['Severity'] == 'Grievous Injury']['Noofvehicle_involved'].sum()
+fatal_count = dfs[0][dfs[0]['Severity'] == 'Fatal']['Noofvehicle_involved'].sum()
+
+damage_only_percentage = (damage_only_count / no_of_accidents) * 100
+grievous_injury_percentage = (grievous_injury_count / no_of_accidents) * 100
+fatal_percentage = (fatal_count / no_of_accidents) * 100
+
+result = {
+    "type": "string",
+    "value": f"Percentage of 'Damage Only' accidents: {damage_only_percentage:.2f}%\nPercentage of 'Grievous Injury' accidents: {grievous_injury_percentage:.2f}%\nPercentage of 'Fatal' accidents: {fatal_percentage:.2f}%"
+}
+            ```
+            
+2024-05-18 15:34:54 [INFO] Executing Step 4: CachePopulation
+2024-05-18 15:34:54 [INFO] Executing Step 5: CodeCleaning
+2024-05-18 15:34:54 [INFO] 
+Code running:
+```
+no_of_accidents = dfs[0]['Noofvehicle_involved'].sum()
+damage_only_count = dfs[0][dfs[0]['Accident_Classification'] == 'Damage Only']['Noofvehicle_involved'].sum()
+grievous_injury_count = dfs[0][dfs[0]['Severity'] == 'Grievous Injury']['Noofvehicle_involved'].sum()
+fatal_count = dfs[0][dfs[0]['Severity'] == 'Fatal']['Noofvehicle_involved'].sum()
+damage_only_percentage = damage_only_count / no_of_accidents * 100
+grievous_injury_percentage = grievous_injury_count / no_of_accidents * 100
+fatal_percentage = fatal_count / no_of_accidents * 100
+result = {'type': 'string', 'value': f"""Percentage of 'Damage Only' accidents: {damage_only_percentage:.2f}%
+Percentage of 'Grievous Injury' accidents: {grievous_injury_percentage:.2f}%
+Percentage of 'Fatal' accidents: {fatal_percentage:.2f}%"""}
+        ```
+2024-05-18 15:34:54 [INFO] Executing Step 6: CodeExecution
+2024-05-18 15:34:54 [INFO] Executing Step 7: ResultValidation
+2024-05-18 15:34:54 [INFO] Answer: {'type': 'string', 'value': "Percentage of 'Damage Only' accidents: 0.00%\nPercentage of 'Grievous Injury' accidents: 44.28%\nPercentage of 'Fatal' accidents: 19.36%"}
+2024-05-18 15:34:54 [INFO] Executing Step 8: ResultParsing
