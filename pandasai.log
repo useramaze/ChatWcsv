@@ -673,3 +673,197 @@ result = {'type': 'plot', 'value': 'C:/Users/amanr/Documents/GitHub/ChatWcsv/exp
 2024-05-19 01:06:38 [INFO] Executing Step 7: ResultValidation
 2024-05-19 01:06:38 [INFO] Answer: {'type': 'plot', 'value': 'C:/Users/amanr/Documents/GitHub/ChatWcsv/exports/charts/temp_chart.png'}
 2024-05-19 01:06:38 [INFO] Executing Step 8: ResultParsing
+2024-05-19 01:11:42 [INFO] Question: Which Road type causes the highest number of Fatal Accidents?
+2024-05-19 01:11:42 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-19 01:11:42 [INFO] Prompt ID: e69f18b3-17dd-479f-b3a8-7059ec363bb4
+2024-05-19 01:11:42 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-19 01:11:43 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-19 01:11:43 [INFO] Executing Step 1: CacheLookup
+2024-05-19 01:11:43 [INFO] Using cached response
+2024-05-19 01:11:43 [INFO] Executing Step 2: PromptGeneration
+2024-05-19 01:11:43 [INFO] Executing Step 2: Skipping...
+2024-05-19 01:11:43 [INFO] Executing Step 3: CodeGenerator
+2024-05-19 01:11:43 [INFO] Executing Step 3: Skipping...
+2024-05-19 01:11:43 [INFO] Executing Step 4: CachePopulation
+2024-05-19 01:11:43 [INFO] Executing Step 4: Skipping...
+2024-05-19 01:11:43 [INFO] Executing Step 5: CodeCleaning
+2024-05-19 01:11:43 [INFO] 
+Code running:
+```
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal'].groupby('Road_Type').size())
+road_type_with_most_fatal_accidents = max(fatal_accidents, key=fatal_accidents.count)
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+        ```
+2024-05-19 01:11:43 [INFO] Executing Step 6: CodeExecution
+2024-05-19 01:11:43 [ERROR] Failed with error: Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+ValueError: max() arg is an empty sequence
+
+2024-05-19 01:11:43 [WARNING] Failed to execute code retrying with a correction framework [retry number: 1]
+2024-05-19 01:11:43 [INFO] Executing Pipeline: ErrorCorrectionPipeline
+2024-05-19 01:11:43 [INFO] Executing Step 0: ErrorPromptGeneration
+2024-05-19 01:11:43 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Vijayanagara,Nelamangala Traffic PS,1.04631e+16,2022,5,Road Accidents,Rail Crossing Unmanned,Not Applicable,Near School or College,Road Environment Defect,Not Applicable,Not Applicable,Run Off Road,Signal lights Blinking,Crest of hill,,,Flooded,Drainage Ditch,Fog / Mist,,Directional Marking,Asphalted,T NARASIPUARA ROAD,15-03-2016,00:25:00
+Chitradurga,Guledagudda PS,1.09771e+16,2016,36,Other Railway Accidents,Cross roads,,Near or inside a village,,No,Damage Only,Side swipe,Stop sign,,Expressway,Bitumen(Tar),Wet,,Mist or Fog,DualLane,,,,01-07-2019,03:58:00
+Mysuru City,Shahabad Town PS,1.04542e+16,2021,2,Rail Road Accidents,Railway crossing,City/Town,Near a recreation place/cinema,Vehicle Defect,,Fatal,Hit parked vehicle,Not Applicable,Straight and flat,Minor District Road,Surfaced,Not Applicable,Engineering Defect of Road,Others,SingleLane,Centre Yellow Line,Paved,Bannuru-Mysuru Main Road,07-01-2023,23:05:00
+</dataframe>
+
+
+The user asked the following question:
+### QUERY
+ Which Road type causes the highest number of Fatal Accidents?
+
+You generated this python code:
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal'].groupby('Road_Type').size())
+road_type_with_most_fatal_accidents = max(fatal_accidents, key=fatal_accidents.count)
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+
+It fails with the following error:
+Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+ValueError: max() arg is an empty sequence
+
+
+Fix the python code above and return the new python code:
+2024-05-19 01:11:43 [INFO] Executing Step 1: CodeGenerator
+2024-05-19 01:11:46 [INFO] Prompt used:
+            None
+            
+2024-05-19 01:11:46 [INFO] Code generated:
+            ```
+            fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'].value_counts().index.tolist())
+road_type_with_most_fatal_accidents = max(set(fatal_accidents), key=fatal_accidents.count)
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+            ```
+            
+2024-05-19 01:11:46 [INFO] Executing Step 2: CodeCleaning
+2024-05-19 01:11:46 [INFO] 
+Code running:
+```
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'].value_counts().index.tolist())
+road_type_with_most_fatal_accidents = max(set(fatal_accidents), key=fatal_accidents.count)
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+        ```
+2024-05-19 01:11:46 [ERROR] Failed with error: Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+ValueError: max() arg is an empty sequence
+
+2024-05-19 01:11:46 [WARNING] Failed to execute code retrying with a correction framework [retry number: 2]
+2024-05-19 01:11:46 [INFO] Executing Pipeline: ErrorCorrectionPipeline
+2024-05-19 01:11:46 [INFO] Executing Step 0: ErrorPromptGeneration
+2024-05-19 01:11:46 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Vijayanagara,Nelamangala Traffic PS,1.04631e+16,2022,5,Road Accidents,Rail Crossing Unmanned,Not Applicable,Near School or College,Road Environment Defect,Not Applicable,Not Applicable,Run Off Road,Signal lights Blinking,Crest of hill,,,Flooded,Drainage Ditch,Fog / Mist,,Directional Marking,Asphalted,T NARASIPUARA ROAD,15-03-2016,00:25:00
+Chitradurga,Guledagudda PS,1.09771e+16,2016,36,Other Railway Accidents,Cross roads,,Near or inside a village,,No,Damage Only,Side swipe,Stop sign,,Expressway,Bitumen(Tar),Wet,,Mist or Fog,DualLane,,,,01-07-2019,03:58:00
+Mysuru City,Shahabad Town PS,1.04542e+16,2021,2,Rail Road Accidents,Railway crossing,City/Town,Near a recreation place/cinema,Vehicle Defect,,Fatal,Hit parked vehicle,Not Applicable,Straight and flat,Minor District Road,Surfaced,Not Applicable,Engineering Defect of Road,Others,SingleLane,Centre Yellow Line,Paved,Bannuru-Mysuru Main Road,07-01-2023,23:05:00
+</dataframe>
+
+
+The user asked the following question:
+### QUERY
+ Which Road type causes the highest number of Fatal Accidents?
+
+You generated this python code:
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'].value_counts().index.tolist())
+road_type_with_most_fatal_accidents = max(set(fatal_accidents), key=fatal_accidents.count)
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+
+It fails with the following error:
+Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+ValueError: max() arg is an empty sequence
+
+
+Fix the python code above and return the new python code:
+2024-05-19 01:11:46 [INFO] Executing Step 1: CodeGenerator
+2024-05-19 01:11:48 [INFO] Prompt used:
+            None
+            
+2024-05-19 01:11:48 [INFO] Code generated:
+            ```
+            fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'].value_counts().index.tolist())
+if fatal_accidents:
+    road_type_with_most_fatal_accidents = max(set(fatal_accidents), key=fatal_accidents.count)
+    result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+else:
+    result = {'type': 'string', 'value': 'No fatal accidents data found.'}
+            ```
+            
+2024-05-19 01:11:48 [INFO] Executing Step 2: CodeCleaning
+2024-05-19 01:11:48 [INFO] 
+Code running:
+```
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'].value_counts().index.tolist())
+if fatal_accidents:
+    road_type_with_most_fatal_accidents = max(set(fatal_accidents), key=fatal_accidents.count)
+    result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+else:
+    result = {'type': 'string', 'value': 'No fatal accidents data found.'}
+        ```
+2024-05-19 01:11:48 [INFO] Executing Step 7: ResultValidation
+2024-05-19 01:11:48 [INFO] Answer: {'type': 'string', 'value': 'No fatal accidents data found.'}
+2024-05-19 01:11:48 [INFO] Executing Step 8: ResultParsing
+2024-05-19 01:13:06 [INFO] Question: What are the top 5 districts suffering from Road Accidents?
+2024-05-19 01:13:06 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-19 01:13:06 [INFO] Prompt ID: 330d05ee-cadf-4db1-8eea-545b668c2825
+2024-05-19 01:13:06 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-19 01:13:07 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-19 01:13:07 [INFO] Executing Step 1: CacheLookup
+2024-05-19 01:13:07 [INFO] Using cached response
+2024-05-19 01:13:07 [INFO] Executing Step 2: PromptGeneration
+2024-05-19 01:13:07 [INFO] Executing Step 2: Skipping...
+2024-05-19 01:13:07 [INFO] Executing Step 3: CodeGenerator
+2024-05-19 01:13:07 [INFO] Executing Step 3: Skipping...
+2024-05-19 01:13:07 [INFO] Executing Step 4: CachePopulation
+2024-05-19 01:13:07 [INFO] Executing Step 4: Skipping...
+2024-05-19 01:13:07 [INFO] Executing Step 5: CodeCleaning
+2024-05-19 01:13:07 [INFO] 
+Code running:
+```
+road_accidents_df = dfs[0][dfs[0]['Accident_Classification'] == 'Road Accidents']
+districts_count = road_accidents_df['DISTRICTNAME'].value_counts()
+top_5_districts = districts_count.head(5)
+result = {'type': 'dataframe', 'value': top_5_districts}
+        ```
+2024-05-19 01:13:07 [INFO] Executing Step 6: CodeExecution
+2024-05-19 01:13:07 [INFO] Executing Step 7: ResultValidation
+2024-05-19 01:13:07 [INFO] Answer: {'type': 'dataframe', 'value':                 DISTRICTNAME
+Bengaluru City         32147
+Tumakuru               15506
+Hassan                 14642
+Bengaluru Dist         14266
+Belagavi Dist          14100}
+2024-05-19 01:13:07 [INFO] Executing Step 8: ResultParsing

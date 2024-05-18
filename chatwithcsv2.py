@@ -19,23 +19,6 @@ def main():
     st.set_page_config(page_title="DataAssistant", page_icon="🐼")
     st.title("Chat with Your Data ")
 
-    # Sample Questions Section
-    st.markdown("## Sample Questions:")
-    default_questions = [
-        "What are the top 5 districts suffering from Road Accidents?",
-        "Can you plot the number of accidents over the years?",
-        "What are the top 5 types of collisions causing road accidents?",
-        "Which Road type causes the highest number of Fatal Accidents?"
-    ]
-
-    if 'selected_question' not in st.session_state:
-        st.session_state.selected_question = None
-
-    for i, question in enumerate(default_questions):
-        if st.button(question, key=f"default_question_{i}"):
-            st.session_state.selected_question = question
-            st.session_state.question_triggered = True
-
     # Initialize the data dictionary
     data = {}
 
@@ -61,7 +44,24 @@ def main():
         st.dataframe(data[df_key])
     else:
         st.warning("Please upload a dataset to proceed.")
+    
+        # Sample Questions Section
+    st.markdown("## Sample Questions:")
+    default_questions = [
+        "What are the top 5 districts suffering from Road Accidents?",
+        "Can you plot the number of accidents over the years?",
+        "What are the top 5 types of collisions causing road accidents?",
+        "Which Road type causes the highest number of Fatal Accidents?"
+    ]
 
+    if 'selected_question' not in st.session_state:
+        st.session_state.selected_question = None
+
+    for i, question in enumerate(default_questions):
+        if st.button(question, key=f"default_question_{i}"):
+            st.session_state.selected_question = question
+            st.session_state.question_triggered = True
+    
     # Instantiate the BambooLLM
     llm = BambooLLM()
     
