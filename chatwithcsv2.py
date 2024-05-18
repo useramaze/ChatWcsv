@@ -23,7 +23,7 @@ def main():
     data = {}
 
     # Load default CSV file
-    default_csv = 'ChatWithCSV PANDASAI\Merged_Clean_CSV.csv'
+    default_csv = 'Default_Accident_Data.csv'
     if os.path.exists(default_csv):
         default_df = pd.read_csv(default_csv)
         data['Default Data'] = default_df
