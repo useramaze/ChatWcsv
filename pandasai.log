@@ -270,3 +270,406 @@ Percentage of 'Fatal' accidents: {fatal_percentage:.2f}%"""}
 2024-05-18 15:34:54 [INFO] Executing Step 7: ResultValidation
 2024-05-18 15:34:54 [INFO] Answer: {'type': 'string', 'value': "Percentage of 'Damage Only' accidents: 0.00%\nPercentage of 'Grievous Injury' accidents: 44.28%\nPercentage of 'Fatal' accidents: 19.36%"}
 2024-05-18 15:34:54 [INFO] Executing Step 8: ResultParsing
+2024-05-19 00:59:02 [INFO] Question: Which Road type causes the highest number of Fatal Accidents?
+2024-05-19 00:59:02 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-19 00:59:02 [INFO] Prompt ID: f2995fbc-b2cb-4e3c-bece-548eed6b8e4d
+2024-05-19 00:59:02 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-19 00:59:03 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-19 00:59:03 [INFO] Executing Step 1: CacheLookup
+2024-05-19 00:59:03 [INFO] Executing Step 2: PromptGeneration
+2024-05-19 00:59:04 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Davanagere,Nelamangala Rural PS,1.04622e+16,2022,52,Road Accidents,Road hump or Rumble strips,Rural Areas,In bazaar,,,Grievous Injury,Skidding or Self accident,Stop Sign,Not Applicable,,,Others,Construction Work / Material,Cloudy,DualLane,Centre Yellow Line,Asphalted,AT-DOMBARAKOPPA LIMITS ON BGM-SWS NH 4 TQ:KITTUR,02-02-2016,20:25:00
+Hassan,Bidar Rural PS,1.09761e+16,2021,4,Other Railway Accidents,Culvert,,Near Bus stop,BUDDHISTS,No,Others,Hit fixed object,Signals (Not working),Hump,State Highway,Concrete,Dry,Drainage Ditch,Wind,,ACHARI,No Side Walk,,26-02-2021,16:08:00
+K.G.F,Sulepet PS,1.04611e+16,2020,1,Rail Road Accidents,Staggered junction,Villages settlement,Near or inside a village,Human Error,Yes,Simple Injury,Medium,No signal lights,,Service Road,Kutcha,Wet,,Hail or Sleet,SingleLane,,,Sira Huliyar Road,11-06-2021,02:48:00
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ Which Road type causes the highest number of Fatal Accidents?
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-05-19 00:59:04 [INFO] Executing Step 3: CodeGenerator
+2024-05-19 00:59:08 [INFO] Prompt used:
+            None
+            
+2024-05-19 00:59:08 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Assume the column names are standardized across all dataframes
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal'].groupby('Road_Type').size())
+
+road_type_with_most_fatal_accidents = max(fatal_accidents, key=fatal_accidents.count)
+
+result = {
+    "type": "string",
+    "value": f"The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}"
+}
+            ```
+            
+2024-05-19 00:59:08 [INFO] Executing Step 4: CachePopulation
+2024-05-19 00:59:08 [INFO] Executing Step 5: CodeCleaning
+2024-05-19 00:59:08 [INFO] 
+Code running:
+```
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal'].groupby('Road_Type').size())
+road_type_with_most_fatal_accidents = max(fatal_accidents, key=fatal_accidents.count)
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+        ```
+2024-05-19 00:59:08 [INFO] Executing Step 6: CodeExecution
+2024-05-19 00:59:08 [ERROR] Failed with error: Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+ValueError: max() arg is an empty sequence
+
+2024-05-19 00:59:08 [WARNING] Failed to execute code retrying with a correction framework [retry number: 1]
+2024-05-19 00:59:08 [INFO] Executing Pipeline: ErrorCorrectionPipeline
+2024-05-19 00:59:08 [INFO] Executing Step 0: ErrorPromptGeneration
+2024-05-19 00:59:08 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Davanagere,Nelamangala Rural PS,1.04622e+16,2022,52,Road Accidents,Road hump or Rumble strips,Rural Areas,In bazaar,,,Grievous Injury,Skidding or Self accident,Stop Sign,Not Applicable,,,Others,Construction Work / Material,Cloudy,DualLane,Centre Yellow Line,Asphalted,AT-DOMBARAKOPPA LIMITS ON BGM-SWS NH 4 TQ:KITTUR,02-02-2016,20:25:00
+Hassan,Bidar Rural PS,1.09761e+16,2021,4,Other Railway Accidents,Culvert,,Near Bus stop,BUDDHISTS,No,Others,Hit fixed object,Signals (Not working),Hump,State Highway,Concrete,Dry,Drainage Ditch,Wind,,ACHARI,No Side Walk,,26-02-2021,16:08:00
+K.G.F,Sulepet PS,1.04611e+16,2020,1,Rail Road Accidents,Staggered junction,Villages settlement,Near or inside a village,Human Error,Yes,Simple Injury,Medium,No signal lights,,Service Road,Kutcha,Wet,,Hail or Sleet,SingleLane,,,Sira Huliyar Road,11-06-2021,02:48:00
+</dataframe>
+
+
+The user asked the following question:
+### QUERY
+ Which Road type causes the highest number of Fatal Accidents?
+
+You generated this python code:
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal'].groupby('Road_Type').size())
+road_type_with_most_fatal_accidents = max(fatal_accidents, key=fatal_accidents.count)
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+
+It fails with the following error:
+Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+ValueError: max() arg is an empty sequence
+
+
+Fix the python code above and return the new python code:
+2024-05-19 00:59:08 [INFO] Executing Step 1: CodeGenerator
+2024-05-19 00:59:10 [INFO] Prompt used:
+            None
+            
+2024-05-19 00:59:10 [INFO] Code generated:
+            ```
+            fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'])
+road_type_with_most_fatal_accidents = fatal_accidents.mode()[0]
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+            ```
+            
+2024-05-19 00:59:10 [INFO] Executing Step 2: CodeCleaning
+2024-05-19 00:59:10 [INFO] 
+Code running:
+```
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'])
+road_type_with_most_fatal_accidents = fatal_accidents.mode()[0]
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+        ```
+2024-05-19 00:59:10 [ERROR] Failed with error: Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+AttributeError: 'list' object has no attribute 'mode'
+
+2024-05-19 00:59:10 [WARNING] Failed to execute code retrying with a correction framework [retry number: 2]
+2024-05-19 00:59:10 [INFO] Executing Pipeline: ErrorCorrectionPipeline
+2024-05-19 00:59:10 [INFO] Executing Step 0: ErrorPromptGeneration
+2024-05-19 00:59:10 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Davanagere,Nelamangala Rural PS,1.04622e+16,2022,52,Road Accidents,Road hump or Rumble strips,Rural Areas,In bazaar,,,Grievous Injury,Skidding or Self accident,Stop Sign,Not Applicable,,,Others,Construction Work / Material,Cloudy,DualLane,Centre Yellow Line,Asphalted,AT-DOMBARAKOPPA LIMITS ON BGM-SWS NH 4 TQ:KITTUR,02-02-2016,20:25:00
+Hassan,Bidar Rural PS,1.09761e+16,2021,4,Other Railway Accidents,Culvert,,Near Bus stop,BUDDHISTS,No,Others,Hit fixed object,Signals (Not working),Hump,State Highway,Concrete,Dry,Drainage Ditch,Wind,,ACHARI,No Side Walk,,26-02-2021,16:08:00
+K.G.F,Sulepet PS,1.04611e+16,2020,1,Rail Road Accidents,Staggered junction,Villages settlement,Near or inside a village,Human Error,Yes,Simple Injury,Medium,No signal lights,,Service Road,Kutcha,Wet,,Hail or Sleet,SingleLane,,,Sira Huliyar Road,11-06-2021,02:48:00
+</dataframe>
+
+
+The user asked the following question:
+### QUERY
+ Which Road type causes the highest number of Fatal Accidents?
+
+You generated this python code:
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'])
+road_type_with_most_fatal_accidents = fatal_accidents.mode()[0]
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+
+It fails with the following error:
+Traceback (most recent call last):
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 85, in execute
+    result = self.execute_code(code_to_run, code_context)
+  File "C:\Users\amanr\.conda\envs\datathon\lib\site-packages\pandasai\pipelines\chat\code_execution.py", line 171, in execute_code
+    exec(code, environment)
+  File "<string>", line 4, in <module>
+AttributeError: 'list' object has no attribute 'mode'
+
+
+Fix the python code above and return the new python code:
+2024-05-19 00:59:10 [INFO] Executing Step 1: CodeGenerator
+2024-05-19 00:59:12 [INFO] Prompt used:
+            None
+            
+2024-05-19 00:59:12 [INFO] Code generated:
+            ```
+            from collections import Counter
+
+fatal_accidents = []
+for df in dfs:
+    fatal_accidents.extend(df[df['Accident_Classification'] == 'Fatal']['Road_Type'])
+    
+road_type_with_most_fatal_accidents = Counter(fatal_accidents).most_common(1)[0][0]
+result = {'type': 'string', 'value': f'The road type causing the highest number of Fatal Accidents is: {road_type_with_most_fatal_accidents}'}
+            ```
+            
+2024-05-19 00:59:12 [INFO] Executing Step 2: CodeCleaning
+2024-05-19 00:59:12 [ERROR] Pipeline failed on step 2: Generated code includes import of collections which is not in whitelist.
+2024-05-19 00:59:12 [ERROR] Pipeline failed on step 6: Generated code includes import of collections which is not in whitelist.
+2024-05-19 01:06:20 [INFO] Question: What are the top 5 districts suffering from Road Accidents?
+2024-05-19 01:06:20 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-19 01:06:20 [INFO] Prompt ID: 86de2cdd-89e9-4884-b59b-19fc5f2e94e6
+2024-05-19 01:06:20 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-19 01:06:20 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-19 01:06:20 [INFO] Executing Step 1: CacheLookup
+2024-05-19 01:06:20 [INFO] Executing Step 2: PromptGeneration
+2024-05-19 01:06:22 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Vijayapur,Ajekar PS,1.04682e+16,2023,6,Rail Road Accidents,Y Junction,Rural Areas,Near a factory industrial area,Accident,Not Applicable,Not Applicable,Overturning,Signal lights Blinking,,Sub Arterial,,Ditch or Potholed,No influence on accident,Others,Intermediate,Centre Yellow Line,No Side Walk,"NH-66, Bhatkal Honnavar Road",02-10-2018,15:50:00
+Kalaburagi City,Challakere PS,1.04601e+16,2020,12,Other Railway Accidents,Culvert,,Near Petrol Pump,,,Others,Hit parked vehicle,T Junction,Hump,Not Applicable,Not Applicable,Others,Construction Work / Material,Clear,,,Metalled,,25-08-2020,01:09:00
+Hubballi Dharwad City,Mannalli PS,1.09741e+16,2021,8,Road Accidents,Offset,Not Applicable,Near or inside a village,Road Environment Defect,No,Simple Injury,Driver-autorickshaw ,Hindu ,Incline,,Gravel,Wet,,Flooding of Slipways/Rivulets,DualLane,ACHARI,,Ninthikal - Puttur,01-07-2016,16:34:00
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ What are the top 5 districts suffering from Road Accidents?
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-05-19 01:06:22 [INFO] Executing Step 3: CodeGenerator
+2024-05-19 01:06:26 [INFO] Prompt used:
+            None
+            
+2024-05-19 01:06:26 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Filter the dataframe to only include rows with Accident_Classification as Road Accidents
+road_accidents_df = dfs[0][dfs[0]['Accident_Classification'] == 'Road Accidents']
+
+# Count the number of occurrences for each district suffering from Road Accidents
+districts_count = road_accidents_df['DISTRICTNAME'].value_counts()
+
+# Get the top 5 districts suffering from Road Accidents
+top_5_districts = districts_count.head(5)
+
+result = {"type": "dataframe", "value": top_5_districts}
+            ```
+            
+2024-05-19 01:06:26 [INFO] Executing Step 4: CachePopulation
+2024-05-19 01:06:26 [INFO] Executing Step 5: CodeCleaning
+2024-05-19 01:06:26 [INFO] 
+Code running:
+```
+road_accidents_df = dfs[0][dfs[0]['Accident_Classification'] == 'Road Accidents']
+districts_count = road_accidents_df['DISTRICTNAME'].value_counts()
+top_5_districts = districts_count.head(5)
+result = {'type': 'dataframe', 'value': top_5_districts}
+        ```
+2024-05-19 01:06:26 [INFO] Executing Step 6: CodeExecution
+2024-05-19 01:06:26 [INFO] Executing Step 7: ResultValidation
+2024-05-19 01:06:26 [INFO] Answer: {'type': 'dataframe', 'value':                 DISTRICTNAME
+Bengaluru City         32147
+Tumakuru               15506
+Hassan                 14642
+Bengaluru Dist         14266
+Belagavi Dist          14100}
+2024-05-19 01:06:26 [INFO] Executing Step 8: ResultParsing
+2024-05-19 01:06:32 [INFO] Question: Can you plot the number of accidents over the years?
+2024-05-19 01:06:32 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-19 01:06:32 [INFO] Prompt ID: 52d7701e-9a81-4371-8ec6-9c54f9b84cca
+2024-05-19 01:06:32 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-19 01:06:33 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-19 01:06:33 [INFO] Executing Step 1: CacheLookup
+2024-05-19 01:06:33 [INFO] Executing Step 2: PromptGeneration
+2024-05-19 01:06:34 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Dharwad,Guledagudda PS,1.04572e+16,2021,7,Other Railway Accidents,Rail Crossing manned,Villages settlement,At pedestrian Crossing,Human Error,Not Applicable,Damage Only,Drowned,Stop sign,,Two way,,Dry,Drainage Ditch,Mist or Fog,,Centre White Line,Metalled,,22-08-2016,07:59:00
+Bengaluru Dist,Malavalli Rural PS,1.09722e+16,2016,4,Rail Road Accidents,Railway crossing,Not Applicable,Near School or College,Vehicle Defect,,Not Applicable,Medium,Signal lights Manual,Incline,Arterial,Kutcha,Others,Not Applicable,Heavy Rain,DualLane,Centre Yellow Line,BUDDHISTS,DODDA GUNI  N H 206 ROAD,26-03-2018,08:12:00
+Belagavi City,Rattihalli PS,1.0982e+16,2019,46,Road Accidents,Other,,Near Petrol Pump,,Yes,Others,Hit pedestrian,Controlled,Slight Curve,,Not Applicable,Flooded,,Very Cold,SixLane,,,"Malvalli-Maddur Main Road,",09-05-2016,10:57:00
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ Can you plot the number of accidents over the years?
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-05-19 01:06:34 [INFO] Executing Step 3: CodeGenerator
+2024-05-19 01:06:38 [INFO] Prompt used:
+            None
+            
+2024-05-19 01:06:38 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Extracting relevant columns for plotting
+accidents_data = []
+for df in dfs:
+    accidents_data.append(df[['Year', 'Accident_Classification']])
+
+# Concatenating all dataframes into one
+accidents_df = pd.concat(accidents_data)
+
+# Grouping by Year and counting number of accidents
+accidents_count = accidents_df.groupby('Year').size()
+
+# Plotting the number of accidents over the years
+plt.figure(figsize=(10, 6))
+plt.plot(accidents_count.index, accidents_count.values, marker='o', color='b')
+plt.xlabel('Year')
+plt.ylabel('Number of Accidents')
+plt.title('Number of Accidents Over the Years')
+plt.grid(True)
+plt.tight_layout()
+
+# Save the plot as png
+plt.savefig('accidents_over_years.png')
+
+# Declaring the result variable
+result = {"type": "plot", "value": "accidents_over_years.png"}
+            ```
+            
+2024-05-19 01:06:38 [INFO] Executing Step 4: CachePopulation
+2024-05-19 01:06:38 [INFO] Executing Step 5: CodeCleaning
+2024-05-19 01:06:38 [INFO] Saving charts to C:\Users\amanr\Documents\GitHub\ChatWcsv\exports\charts\temp_chart.png
+2024-05-19 01:06:38 [INFO] 
+Code running:
+```
+accidents_data = []
+for df in dfs:
+    accidents_data.append(df[['Year', 'Accident_Classification']])
+accidents_df = pd.concat(accidents_data)
+accidents_count = accidents_df.groupby('Year').size()
+plt.figure(figsize=(10, 6))
+plt.plot(accidents_count.index, accidents_count.values, marker='o', color='b')
+plt.xlabel('Year')
+plt.ylabel('Number of Accidents')
+plt.title('Number of Accidents Over the Years')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig('C:/Users/amanr/Documents/GitHub/ChatWcsv/exports/charts/temp_chart.png')
+result = {'type': 'plot', 'value': 'C:/Users/amanr/Documents/GitHub/ChatWcsv/exports/charts/temp_chart.png'}
+        ```
+2024-05-19 01:06:38 [INFO] Executing Step 6: CodeExecution
+2024-05-19 01:06:38 [INFO] Executing Step 7: ResultValidation
+2024-05-19 01:06:38 [INFO] Answer: {'type': 'plot', 'value': 'C:/Users/amanr/Documents/GitHub/ChatWcsv/exports/charts/temp_chart.png'}
+2024-05-19 01:06:38 [INFO] Executing Step 8: ResultParsing
