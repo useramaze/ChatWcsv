@@ -15,19 +15,16 @@ headers ={
 
 os.environ["PANDASAI_API_KEY"] = headers["authorization"]
 
+DEFAULT_CSV_PATH = "Default_Accident_Data.csv"
+
+
+# Dictionary to store the extracted dataframes
+data = {}
+
 def main():
     st.set_page_config(page_title="DataAssistant", page_icon="🐼")
     st.title("Chat with Your Data ")
-
-    # Initialize the data dictionary
-    data = {}
-
-    # Load default CSV file
-    default_csv = 'Default_Accident_Data.csv'
-    if os.path.exists(default_csv):
-        default_df = pd.read_csv(default_csv)
-        data['Default Data'] = default_df
-
+    
     # Side Menu Bar
     with st.sidebar:
         st.title("Configuration:⚙️")
@@ -35,33 +32,16 @@ def main():
         file_upload = st.file_uploader("Upload your Data", accept_multiple_files=False, type=['csv', 'xls', 'xlsx'])
         st.markdown(":green[*Please ensure the first row has the column names.*]")
 
-    if file_upload is not None:
-        uploaded_data = extract_dataframes(file_upload)
-        data.update(uploaded_data)
-    
-    if data:
-        df_key = st.selectbox("Here's your uploaded data!", tuple(data.keys()), index=0)
-        st.dataframe(data[df_key])
+    # Load the default CSV file if no file is uploaded
+    if file_upload is None:
+        st.info(f"Upload your own file from sidebar for Customized Reports")
+        data = extract_dataframes(DEFAULT_CSV_PATH)
     else:
-        st.warning("Please upload a dataset to proceed.")
-    
-        # Sample Questions Section
-    st.markdown("## Sample Questions:")
-    default_questions = [
-        "What are the top 5 districts suffering from Road Accidents?",
-        "Can you plot the number of accidents over the years?",
-        "What are the top 5 types of collisions causing road accidents?",
-        "Which Road type causes the highest number of Fatal Accidents?"
-    ]
+        data = extract_dataframes(file_upload)
 
-    if 'selected_question' not in st.session_state:
-        st.session_state.selected_question = None
+    df = st.selectbox("Here's your uploaded data!", tuple(data.keys()), index=0)
+    st.dataframe(data[df])
 
-    for i, question in enumerate(default_questions):
-        if st.button(question, key=f"default_question_{i}"):
-            st.session_state.selected_question = question
-            st.session_state.question_triggered = True
-    
     # Instantiate the BambooLLM
     llm = BambooLLM()
     
@@ -69,37 +49,11 @@ def main():
     analyst = get_agent(data, llm)
 
     # Start the chat with the PandasAI agent
-    if data:
-        chat_window(analyst, data[df_key])
+    chat_window(analyst, data[df])
 
 def chat_window(analyst, df):
     with st.chat_message("assistant"):
         st.text("Get instant answers to your runtime queries with Data Assistant.")
-
-    if st.session_state.selected_question and st.session_state.question_triggered:
-        user_question = st.session_state.selected_question
-        st.session_state.messages.append({"role": "user", "question": user_question})
-        with st.chat_message("user"):
-            st.markdown(user_question)
-        try:
-            with st.spinner("Analyzing..."):
-                response = analyst.chat(user_question)
-                plot_path = "exports/charts/temp_chart.png"
-                if os.path.exists(plot_path):
-                    with open(plot_path, "rb") as img_file:
-                        img_data = base64.b64encode(img_file.read()).decode()
-                    st.image(base64.b64decode(img_data))
-                    st.session_state.messages.append({"role": "assistant", "plot_data": img_data})
-                    os.remove(plot_path)
-                else:
-                    st.write(response)
-                    st.session_state.messages.append({"role": "assistant", "response": response})
-        except Exception as e:
-            st.write(e)
-            error_message = "⚠️Sorry, Couldn't generate the answer! Please try rephrasing your question!"
-            st.session_state.messages.append({"role": "assistant", "error": error_message})
-        st.session_state.selected_question = None
-        st.session_state.question_triggered = False
 
     # Initializing message history and chart path in session state
     if "messages" not in st.session_state:
@@ -118,34 +72,28 @@ def chat_window(analyst, df):
                 img = base64.b64decode(message['plot_data'])
                 st.image(img)
 
-    # Getting the questions from the users
-    user_question = st.chat_input("What are you curious about?")
+
+
+    # Predefined questions for the user to click
+    predefined_questions = [ 
+        "Can you plot the number of accidents over the years?",
+        "What are the top 5 districts suffering from Road Accidents?",
+        "What are the top 3 Accident Sublocations for Road Accidents?",
+        "What are the top 3 Collision Type causing Fatal Severity Road Accidents?"
+    ]
+
+    st.markdown("## Sample Questions:")
+
+    # Display the predefined questions as buttons
+    for question in predefined_questions:
+        if st.button(question):
+            process_question(analyst, question)
+
+    # Explicit user queries
+    user_question = st.chat_input("What are you curious about? ")
 
     if user_question:
-        with st.chat_message("user"):
-            st.markdown(user_question)
-        st.session_state.messages.append({"role": "user", "question": user_question})
-
-        try:
-            with st.spinner("Analyzing..."):
-                response = analyst.chat(user_question)
-
-                # Check if a plot has been generated and saved in the export directory
-                plot_path = "exports/charts/temp_chart.png"
-                if os.path.exists(plot_path):
-                    with open(plot_path, "rb") as img_file:
-                        img_data = base64.b64encode(img_file.read()).decode()
-                    st.image(base64.b64decode(img_data))
-                    st.session_state.messages.append({"role": "assistant", "plot_data": img_data})
-                    os.remove(plot_path)
-                else:
-                    st.write(response)
-                    st.session_state.messages.append({"role": "assistant", "response": response})
-
-        except Exception as e:
-            st.write(e)
-            error_message = "⚠️Sorry, Couldn't generate the answer! Please try rephrasing your question!"
-            st.session_state.messages.append({"role": "assistant", "error": error_message})
+        process_question(analyst, user_question)
 
     # Function to clear history
     def clear_chat_history():
@@ -154,6 +102,32 @@ def chat_window(analyst, df):
     # Button to clear history
     st.sidebar.text("Click to Clear Chat history")
     st.sidebar.button("CLEAR 🗑️", on_click=clear_chat_history)
+
+def process_question(analyst, question):
+    with st.chat_message("user"):
+        st.markdown(question)
+    st.session_state.messages.append({"role": "user", "question": question})
+
+    try:
+        with st.spinner("Analyzing..."):
+            response = analyst.chat(question)
+
+            # Check if a plot has been generated and saved in the export directory
+            plot_path = "exports/charts/temp_chart.png"
+            if os.path.exists(plot_path):
+                with open(plot_path, "rb") as img_file:
+                    img_data = base64.b64encode(img_file.read()).decode()
+                st.image(base64.b64decode(img_data))
+                st.session_state.messages.append({"role": "assistant", "plot_data": img_data})
+                os.remove(plot_path)
+            else:
+                st.write(response)
+                st.session_state.messages.append({"role": "assistant", "response": response})
+
+    except Exception as e:
+        st.write(e)
+        error_message = "⚠️Sorry, Couldn't generate the answer! Please try rephrasing your question!"
+        st.session_state.messages.append({"role": "assistant", "error": error_message})
 
 def get_agent(data, llm):
     """
@@ -166,24 +140,33 @@ def get_agent(data, llm):
     agent = Agent(list(data.values()), config={"llm": llm, "verbose": True, "response_parser": StreamlitResponse})
     return agent
 
-def extract_dataframes(raw_file):
+def extract_dataframes(file_path_or_buffer):
     """
-    This function extracts dataframes from the uploaded file/files
+    This function extracts dataframes from the given file path or buffer.
     Args: 
-        raw_file: Upload_File object
+        file_path_or_buffer: Path to the file or file buffer (uploaded file)
     Processing: Based on the type of file read_csv or read_excel to extract the dataframes
     Output: 
         dfs: A dictionary with the dataframes
     """
     dfs = {}
-    if raw_file.name.split('.')[1] == 'csv':
-        csv_name = raw_file.name.split('.')[0]
-        df = pd.read_csv(raw_file)
-        dfs[csv_name] = df
-    elif raw_file.name.split('.')[1] == 'xlsx' or raw_file.name.split('.')[1] == 'xls':
-        xls = pd.ExcelFile(raw_file)
-        for sheet_name in xls.sheet_names:
-            dfs[sheet_name] = pd.read_excel(raw_file, sheet_name=sheet_name)
+    if isinstance(file_path_or_buffer, str):
+        if file_path_or_buffer.endswith('.csv'):
+            df = pd.read_csv(file_path_or_buffer)
+            dfs["Default Data"] = df
+        elif file_path_or_buffer.endswith(('.xlsx', '.xls')):
+            xls = pd.ExcelFile(file_path_or_buffer)
+            for sheet_name in xls.sheet_names:
+                dfs[sheet_name] = pd.read_excel(file_path_or_buffer, sheet_name=sheet_name)
+    else:
+        if file_path_or_buffer.name.endswith('.csv'):
+            csv_name = file_path_or_buffer.name.split('.')[0]
+            df = pd.read_csv(file_path_or_buffer)
+            dfs[csv_name] = df
+        elif file_path_or_buffer.name.endswith(('.xlsx', '.xls')):
+            xls = pd.ExcelFile(file_path_or_buffer)
+            for sheet_name in xls.sheet_names:
+                dfs[sheet_name] = pd.read_excel(file_path_or_buffer, sheet_name=sheet_name)
     return dfs
 
 if __name__ == "__main__":

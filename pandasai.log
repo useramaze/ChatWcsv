@@ -867,3 +867,138 @@ Hassan                 14642
 Bengaluru Dist         14266
 Belagavi Dist          14100}
 2024-05-19 01:13:07 [INFO] Executing Step 8: ResultParsing
+2024-05-19 13:03:10 [INFO] Question: Can you plot the number of accidents over the years?
+2024-05-19 13:03:10 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-19 13:03:10 [INFO] Prompt ID: e8cfc5f5-3387-411f-9ba9-3ad5de6f2a1e
+2024-05-19 13:03:10 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-19 13:03:10 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-19 13:03:10 [INFO] Executing Step 1: CacheLookup
+2024-05-19 13:03:10 [INFO] Using cached response
+2024-05-19 13:03:10 [INFO] Executing Step 2: PromptGeneration
+2024-05-19 13:03:10 [INFO] Executing Step 2: Skipping...
+2024-05-19 13:03:10 [INFO] Executing Step 3: CodeGenerator
+2024-05-19 13:03:10 [INFO] Executing Step 3: Skipping...
+2024-05-19 13:03:10 [INFO] Executing Step 4: CachePopulation
+2024-05-19 13:03:10 [INFO] Executing Step 4: Skipping...
+2024-05-19 13:03:10 [INFO] Executing Step 5: CodeCleaning
+2024-05-19 13:03:10 [INFO] Saving charts to C:\Users\amanr\Documents\GitHub\ChatWcsv\exports\charts\temp_chart.png
+2024-05-19 13:03:10 [INFO] 
+Code running:
+```
+accidents_data = []
+for df in dfs:
+    accidents_data.append(df[['Year', 'Accident_Classification']])
+accidents_df = pd.concat(accidents_data)
+accidents_count = accidents_df.groupby('Year').size()
+plt.figure(figsize=(10, 6))
+plt.plot(accidents_count.index, accidents_count.values, marker='o', color='b')
+plt.xlabel('Year')
+plt.ylabel('Number of Accidents')
+plt.title('Number of Accidents Over the Years')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig('C:/Users/amanr/Documents/GitHub/ChatWcsv/exports/charts/temp_chart.png')
+result = {'type': 'plot', 'value': 'C:/Users/amanr/Documents/GitHub/ChatWcsv/exports/charts/temp_chart.png'}
+        ```
+2024-05-19 13:03:10 [INFO] Executing Step 6: CodeExecution
+2024-05-19 13:03:10 [INFO] Executing Step 7: ResultValidation
+2024-05-19 13:03:10 [INFO] Answer: {'type': 'plot', 'value': 'C:/Users/amanr/Documents/GitHub/ChatWcsv/exports/charts/temp_chart.png'}
+2024-05-19 13:03:10 [INFO] Executing Step 8: ResultParsing
+2024-05-19 13:03:18 [INFO] Question: What are the top 3 Accident Sublocations for Road Accidents?
+2024-05-19 13:03:18 [INFO] Running PandasAI with bamboo_llm LLM...
+2024-05-19 13:03:18 [INFO] Prompt ID: 81bdd4da-95f6-4b3f-a99e-1e9467ad5d27
+2024-05-19 13:03:18 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-05-19 13:03:18 [INFO] Executing Step 0: ValidatePipelineInput
+2024-05-19 13:03:18 [INFO] Executing Step 1: CacheLookup
+2024-05-19 13:03:18 [INFO] Executing Step 2: PromptGeneration
+2024-05-19 13:03:20 [INFO] Using prompt: <dataframe>
+dfs[0]:278962x26
+DISTRICTNAME,UNITNAME,Crime_No,Year,Noofvehicle_involved,Accident_Classification,Accident_Spot,Accident_Location,Accident_SubLocation,Main_Cause,Hit_Run,Severity,Collision_Type,Junction_Control,Road_Character,Road_Type,Surface_Type,Surface_Condition,Road_Condition,Weather,Lane_Type,Road_Markings,Side_Walk,Accident_Road,FIR Details.Offense_Date,FIR Details.Offense_Time
+Belagavi Dist,Jog PS,1.04491e+16,2017,10,Other Railway Accidents,More than four arms,City/Town,Near Hospital,,No,Fatal,Hit fixed object,Signals (Working),Dip or trough,Others,Kutcha,Muddy,,Clear,DualLane,,BUDDHISTS,DWD- BGM NH4 ROAD NEAR DASTIKOPPA BUS STAND TQ: KITTUR,21-04-2018,22:34:00
+K.G.F,Mannalli PS,1.04442e+16,2016,36,Rail Road Accidents,Not Applicable,Rural Areas,Near office complex,Vehicle Defect,Not Applicable,Not Applicable,Hit pedal cyclist,Signal lights Manual,,,,Flooded,Drainage Ditch,Flooding of Slipways/Rivulets,,Centre White Line,,,30-11-2017,01:20:00
+Mysuru Dist,Shivajinagar Traffic PS,1.09762e+16,2020,46,Road Accidents,Circle,,Residential area,BUDDHISTS,,Grievous Injury,Hit puchcart,Controlled,Incline,Major District Road,Metalled,Ditch or Potholed,Engineering Defect of Road,Fine,Others,Zebra Crossing,Concrete,Hiresindhogi-Chikka Sindhogi Road,22-02-2016,01:25:00
+</dataframe>
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+
+
+
+
+### QUERY
+ What are the top 3 Accident Sublocations for Road Accidents?
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-05-19 13:03:20 [INFO] Executing Step 3: CodeGenerator
+2024-05-19 13:03:25 [INFO] Prompt used:
+            None
+            
+2024-05-19 13:03:25 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Extracting relevant data from the dataframes
+accident_sublocations = []
+for df in dfs:
+    sublocations = df[df['Accident_Classification'] == 'Road Accidents']['Accident_SubLocation'].value_counts()
+    accident_sublocations.extend(sublocations.items())
+
+# Creating a DataFrame to store the count of each Accident Sublocation
+accident_sublocations_df = pd.DataFrame(accident_sublocations, columns=['Accident_SubLocation', 'Count'])
+
+# Sorting the DataFrame by count in descending order
+accident_sublocations_df = accident_sublocations_df.sort_values(by='Count', ascending=False)
+
+# Getting the top 3 Accident Sublocations for Road Accidents
+top_3_accident_sublocations = accident_sublocations_df.head(3)
+
+result = {
+    "type": "dataframe",
+    "value": top_3_accident_sublocations
+}
+            ```
+            
+2024-05-19 13:03:25 [INFO] Executing Step 4: CachePopulation
+2024-05-19 13:03:25 [INFO] Executing Step 5: CodeCleaning
+2024-05-19 13:03:25 [INFO] 
+Code running:
+```
+accident_sublocations = []
+for df in dfs:
+    sublocations = df[df['Accident_Classification'] == 'Road Accidents']['Accident_SubLocation'].value_counts()
+    accident_sublocations.extend(sublocations.items())
+accident_sublocations_df = pd.DataFrame(accident_sublocations, columns=['Accident_SubLocation', 'Count'])
+accident_sublocations_df = accident_sublocations_df.sort_values(by='Count', ascending=False)
+top_3_accident_sublocations = accident_sublocations_df.head(3)
+result = {'type': 'dataframe', 'value': top_3_accident_sublocations}
+        ```
+2024-05-19 13:03:25 [INFO] Executing Step 6: CodeExecution
+2024-05-19 13:03:25 [INFO] Executing Step 7: ResultValidation
+2024-05-19 13:03:25 [INFO] Answer: {'type': 'dataframe', 'value':   Accident_SubLocation   Count
+0            Open area  130716
+1     Residential area   28019
+2        Near Bus stop   27552}
+2024-05-19 13:03:25 [INFO] Executing Step 8: ResultParsing
